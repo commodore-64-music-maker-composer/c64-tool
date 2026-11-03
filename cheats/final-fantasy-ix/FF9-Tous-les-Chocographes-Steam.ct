@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="52">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>10</ID>
+      <Description>"Initialiser FF9 (ouvrir le menu principal une fois)"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript><![CDATA[[ENABLE]
+{$lua}
+LaunchMonoDataCollector()
+{$asm}
+aobscan(MainMenuGeneralInfoAOB,48 8B 40 20 48 8B 48 20 48 83 C1 1C 48 83 EC 20 49)
+registersymbol(MainMenuGeneralInfoAOB)
+alloc(newmem,2048,MainMenuGeneralInfoAOB)
+aobscan(MainMenuStateSystemAOB,48 83 C4 20 48 8B 40 28 C9 C3)
+registersymbol(MainMenuStateSystemAOB)
+luaCall(lua_aobscan("GetEventStateAOB","","48 83 C4 20 48 8B 50 20 41 B8 ?? ?? ?? ?? 4D 63 00",1))
+label(FF9CommonStatePtr)
+registersymbol(FF9CommonStatePtr)
+label(returnhere)
+label(originalcode)
+label(exit)
+label(FF9EventStatePtr)
+registersymbol(FF9EventStatePtr)
+label(returnhere2)
+label(originalcode2)
+label(exit2)
+label(FF9StateSystemPtr)
+registersymbol(FF9StateSystemPtr)
+label(returnhere3)
+label(originalcode3)
+label(exit3)
+label(FF9BattleStatePtr)
+registersymbol(FF9BattleStatePtr)
+label(SelectedChar)
+registersymbol(SelectedChar)
+label(SelectedPartyCharSlot)
+registersymbol(SelectedPartyCharSlot)
+label(SelectedPartyChar)
+registersymbol(SelectedPartyChar)
+label(SelectedItemSlot)
+registersymbol(SelectedItemSlot)
+label(SelectedAbilityItemSlot)
+registersymbol(SelectedAbilityItemSlot)
+label(FF9ItemDataPtr)
+registersymbol(FF9ItemDataPtr)
+newmem:
+  mov [FF9CommonStatePtr],rax
+originalcode:
+  mov rax,[rax+20]
+  mov rcx,[rax+20]
+exit:
+  jmp returnhere
+newmem2:
+  mov [FF9EventStatePtr],rax
+originalcode2:
+  add rsp,20
+  mov rdx,[rax+20]
+exit2:
+  jmp returnhere2
+newmem3:
+  mov [FF9StateSystemPtr],rax
+originalcode3:
+  add rsp,20
+  mov rax,[rax+28]
+exit3:
+  jmp returnhere3
+FF9CommonStatePtr:
+dq 0
+FF9EventStatePtr:
+dq 0
+FF9StateSystemPtr:
+dq 0
+FF9BattleStatePtr:
+dq 0
+SelectedChar:
+dd 0
+SelectedPartyChar:
+dd 0
+SelectedPartyCharSlot:
+dd 0
+SelectedItemSlot:
+dd 0
+SelectedAbilityItemSlot:
+dd 0
+FF9ItemDataPtr:
+dq 0
+MainMenuGeneralInfoAOB:
+  jmp newmem
+  nop
+  nop
+  nop
+returnhere:
+GetEventStateAOB:
+  jmp newmem2
+  nop
+  nop
+  nop
+returnhere2:
+MainMenuStateSystemAOB:
+  jmp newmem3
+  nop
+  nop
+  nop
+returnhere3:
+[DISABLE]
+MainMenuGeneralInfoAOB:
+  db 48 8B 40 20 48 8B 48 20
+GetEventStateAOB:
+  db 48 83 C4 20 48 8B 50 20
+MainMenuStateSystemAOB:
+  db 48 83 C4 20 48 8B 40 28
+unregistersymbol(FF9CommonStatePtr)
+unregistersymbol(FF9StateSystemPtr)
+unregistersymbol(FF9EventStatePtr)
+unregistersymbol(FF9BattleStatePtr)
+unregistersymbol(FF9ItemDataPtr)
+unregistersymbol(MainMenuGeneralInfoAOB)
+unregistersymbol(SelectedChar)
+unregistersymbol(SelectedPartyChar)
+unregistersymbol(SelectedPartyCharSlot)
+unregistersymbol(SelectedItemSlot)
+unregistersymbol(SelectedAbilityItemSlot)
+dealloc(newmem]]></AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>304</ID>
+      <Description>"Tout l’inventaire des chocographes"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript><![CDATA[[ENABLE]
+{$lua}
+local eventStateAddress = getAddressSafe("FF9EventStatePtr")
+if eventStateAddress == nil then error("Active d’abord « Initialiser FF9 » dans le menu du jeu.") end
+local FF9EventState = ReadPointer(eventStateAddress)
+if FF9EventState == nil or FF9EventState == 0 then error("Ouvre le menu principal du jeu, puis réessaie.") end
+local gEventGlobal = ReadPointer(FF9EventState + 0x20)
+if gEventGlobal == nil or gEventGlobal == 0 then error("Le pointeur FF9 n’est pas prêt : rouvre le menu du jeu et réessaie.") end
+WriteBytes(gEventGlobal + 0xDB,255)
+WriteBytes(gEventGlobal + 0xDC,255)
+WriteBytes(gEventGlobal + 0xDD,255)
+{$asm}
+[DISABLE]]></AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3505</ID>
+      <Description>"Toutes les zones de chocographes trouvées"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript><![CDATA[[ENABLE]
+{$lua}
+local eventStateAddress = getAddressSafe("FF9EventStatePtr")
+if eventStateAddress == nil then error("Active d’abord « Initialiser FF9 » dans le menu du jeu.") end
+local FF9EventState = ReadPointer(eventStateAddress)
+if FF9EventState == nil or FF9EventState == 0 then error("Ouvre le menu principal du jeu, puis réessaie.") end
+local gEventGlobal = ReadPointer(FF9EventState + 0x20)
+if gEventGlobal == nil or gEventGlobal == 0 then error("Le pointeur FF9 n’est pas prêt : rouvre le menu du jeu et réessaie.") end
+WriteBytes(gEventGlobal + 0xD8,255)
+WriteBytes(gEventGlobal + 0xD9,255)
+WriteBytes(gEventGlobal + 0xDA,255)
+{$asm}
+[DISABLE]]></AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <LuaScript>-- FF9 Steam x64; scripts based on DrummerIX's FF9.CT (EDIT 9.0, file id 16020).
+-- Enable the initializer once and visit the in-game menu before activating either chocograph option.</LuaScript>
+</CheatTable>
