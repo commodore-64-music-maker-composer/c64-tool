@@ -2,79 +2,46 @@
 <CheatTable CheatEngineTableVersion="52">
   <CheatEntries>
     <CheatEntry>
-      <ID>500</ID>
-      <Description>"FF9 Steam — Djidane God Mode (pointer)"</Description>
-      <LastState Value="" RealAddress="00000000"/>
+      <ID>600</ID>
+      <Description>"FF9 Steam — God Mode (Djidane inclus, équipe entière)"</Description>
+      <LastState/>
       <VariableType>Auto Assembler Script</VariableType>
-      <AssemblerScript>// Based on the supplied table; original table credit: mul0 / mul0.com.
-// One switch installs both hooks, so playerBase is always declared.
+      <AssemblerScript>// Uses the HP hook from the supplied Final Fantasy IX.ct.
+// Original table credit: mul0 / mul0.com.
 [ENABLE]
-alloc(captureMem,2048,StatusUI:DisplayAllCharacterInfo+388)
-alloc(godMem,2048,BattleHUD:CheckHPState+b)
-label(captureReturn)
-label(captureOriginal)
-label(playerBase)
-label(godReturn)
-label(godRestore)
-registersymbol(playerBase)
+alloc(newmem,2048,BattleHUD:CheckHPState+b)
+label(returnhere)
+label(originalcode)
 
-captureMem:
-    cmp byte ptr [rax+68],00
-    jne captureOriginal
-    mov [playerBase],rax
-
-captureOriginal:
-    movzx eax,byte ptr [rax+69]
-    cmp eax,63
-    jmp captureReturn
-
-playerBase:
-    dq 00
-
-godMem:
+newmem:
     push rbx
     push rcx
-    cmp qword ptr [playerBase],00
-    je godRestore
-    cmp rsi,[playerBase]
-    jne godRestore
     cmp qword ptr [rsi+28],00
-    je godRestore
+    je originalcode
     cmp qword ptr [rsi+30],00
-    je godRestore
+    je originalcode
     mov rbx,[rsi+28]
     mov rcx,[rsi+30]
     mov dx,[rbx+10]
     mov [rcx+10],dx
 
-godRestore:
+originalcode:
     pop rcx
     pop rbx
     mov rax,[rsi+30]
     movzx eax,word ptr [rax+10]
-    jmp godReturn
-
-StatusUI:DisplayAllCharacterInfo+388:
-    jmp captureMem
-    nop
-    nop
-captureReturn:
+    jmp returnhere
 
 BattleHUD:CheckHPState+b:
-    jmp godMem
+    jmp newmem
     nop
     nop
     nop
-godReturn:
+
+returnhere:
 
 [DISABLE]
-unregistersymbol(playerBase)
-dealloc(godMem)
-dealloc(captureMem)
-
-StatusUI:DisplayAllCharacterInfo+388:
-    movzx eax,byte ptr [rax+69]
-    cmp eax,63
+dealloc(newmem)
 
 BattleHUD:CheckHPState+b:
     mov rax,[rsi+30]
