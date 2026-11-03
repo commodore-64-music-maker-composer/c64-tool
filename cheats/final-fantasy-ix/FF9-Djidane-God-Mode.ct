@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="52">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>500</ID>
+      <Description>"FF9 Steam — Djidane God Mode (pointer)"</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>501</ID>
+          <Description>"1) Capture Djidane pointer — open party/status screen once"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>// Based on the supplied table; original table credit: mul0 / mul0.com.
+[ENABLE]
+alloc(newmem,2048,StatusUI:DisplayAllCharacterInfo+388)
+label(returnhere)
+label(originalcode)
+label(playerBase)
+registersymbol(playerBase)
+
+newmem:
+    cmp byte ptr [rax+68],00
+    jne originalcode
+    mov [playerBase],rax
+
+originalcode:
+    movzx eax,byte ptr [rax+69]
+    cmp eax,63
+    jmp returnhere
+
+playerBase:
+    dq 00
+
+StatusUI:DisplayAllCharacterInfo+388:
+    jmp newmem
+    nop
+    nop
+
+returnhere:
+
+[DISABLE]
+unregistersymbol(playerBase)
+dealloc(newmem)
+
+StatusUI:DisplayAllCharacterInfo+388:
+    movzx eax,byte ptr [rax+69]
+    cmp eax,63
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>502</ID>
+          <Description>"2) Djidane God Mode — battle only"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>// Enable step 1 first and visit the party/status screen once.
+// Copies max HP to current HP only when the battle pointer equals playerBase.
+[ENABLE]
+alloc(newmem,2048,BattleHUD:CheckHPState+b)
+label(returnhere)
+label(restore)
+
+newmem:
+    push rbx
+    push rcx
+    cmp qword ptr [playerBase],00
+    je restore
+    cmp rsi,[playerBase]
+    jne restore
+    cmp qword ptr [rsi+28],00
+    je restore
+    cmp qword ptr [rsi+30],00
+    je restore
+    mov rbx,[rsi+28]
+    mov rcx,[rsi+30]
+    mov dx,[rbx+10]
+    mov [rcx+10],dx
+
+restore:
+    pop rcx
+    pop rbx
+    mov rax,[rsi+30]
+    movzx eax,word ptr [rax+10]
+    jmp returnhere
+
+BattleHUD:CheckHPState+b:
+    jmp newmem
+    nop
+    nop
+    nop
+
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+
+BattleHUD:CheckHPState+b:
+    mov rax,[rsi+30]
+    movzx eax,word ptr [rax+10]
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
