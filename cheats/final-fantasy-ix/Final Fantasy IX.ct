@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="52">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>22</ID>
+      <Description>"Final Fantasy IX | 2020-08-06"</Description>
+      <LastState Value="" RealAddress="00000000"/>
+      <GroupHeader>1</GroupHeader>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>0</ID>
+          <Description>"[AA] Prepare for character"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>//  ███╗   ███╗██╗   ██╗██╗      ██████╗
+//  ████╗ ████║██║   ██║██║     ██╔═████╗
+//  ██╔████╔██║██║   ██║██║     ██║██╔██║
+//  ██║╚██╔╝██║██║   ██║██║     ████╔╝██║
+//  ██║ ╚═╝ ██║╚██████╔╝███████╗╚██████╔╝
+//  ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝
+//  🎯 Game    : FF9.exe
+//  🧾 Version : 2020-08-06
+//  📅 Date    : 2026-28-09
+//  🧠 Author  : mul0
+//  🌐 Site    : https://mul0.com/
+
+[ENABLE]
+alloc(newmem,2048,StatusUI:DisplayAllCharacterInfo+388) 
+
+label(returnhere)
+label(originalcode)
+label(exit)
+label(playerBase)
+
+registersymbol(playerBase)
+
+newmem:
+    mov [playerBase],rax
+
+originalcode:
+    movzx eax,byte ptr [rax+69]
+    cmp eax,63
+
+exit:
+    jmp returnhere
+
+playerBase:
+    dq 00
+
+StatusUI:DisplayAllCharacterInfo+388:
+    jmp newmem
+    nop
+    nop
+
+returnhere:
+
+[DISABLE]
+
+unregistersymbol(playerBase)
+
+dealloc(newmem)
+
+StatusUI:DisplayAllCharacterInfo+388:
+    movzx eax,byte ptr [rax+69]
+    cmp eax,63
+
+//Alt: db 0F B6 40 69 83 F8 63
+
+{
+// ORIGINAL CODE - INJECTION POINT: 12D4A9F8
+
+12D4A9CE: 48 83 C4 20                    -  add rsp,20
+12D4A9D2: 48 8B D0                       -  mov rdx,rax
+12D4A9D5: 48 8B 45 C8                    -  mov rax,[rbp-38]
+12D4A9D9: 48 8B C8                       -  mov rcx,rax
+12D4A9DC: 48 83 EC 20                    -  sub rsp,20
+12D4A9E0: 83 38 00                       -  cmp dword ptr [rax],00
+12D4A9E3: 49 BB 40 39 94 20 00 00 00 00  -  mov r11,UILabel:set_text
+12D4A9ED: 41 FF D3                       -  call r11d
+12D4A9F0: 48 83 C4 20                    -  add rsp,20
+12D4A9F4: 48 8B 45 D0                    -  mov rax,[rbp-30]
+// ---------- INJECTING HERE ----------
+12D4A9F8: 0F B6 40 69                    -  movzx eax,byte ptr [rax+69]
+12D4A9FC: 83 F8 63                       -  cmp eax,63
+// ---------- DONE INJECTING  ----------
+12D4A9FF: 0F 8C 09 00 00 00              -  jl StatusUI:DisplayAllCharacterInfo+39e
+12D4AA05: 48 8B 45 D0                    -  mov rax,[rbp-30]
+12D4AA09: 8B 70 6C                       -  mov esi,[rax+6C]
+12D4AA0C: EB 2A                          -  jmp StatusUI:DisplayAllCharacterInfo+3c8
+12D4AA0E: 48 8B 04 25 90 AE 98 04        -  mov rax,[0498AE90]
+12D4AA16: 48 8B 4D D0                    -  mov rcx,[rbp-30]
+12D4AA1A: 0F B6 49 69                    -  movzx ecx,byte ptr [rcx+69]
+12D4AA1E: 48 63 C9                       -  movsxd  rcx,ecx
+12D4AA21: 39 48 18                       -  cmp [rax+18],ecx
+12D4AA24: 0F 86 F9 05 00 00              -  jbe StatusUI:DisplayAllCharacterInfo+9b3
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>2</ID>
+          <Description>"[AA] Prepare for battle"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>//  ███╗   ███╗██╗   ██╗██╗      ██████╗
+//  ████╗ ████║██║   ██║██║     ██╔═████╗
+//  ██╔████╔██║██║   ██║██║     ██║██╔██║
+//  ██║╚██╔╝██║██║   ██║██║     ████╔╝██║
+//  ██║ ╚═╝ ██║╚██████╔╝███████╗╚██████╔╝
+//  ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝
+//  🎯 Game    : FF9.exe
+//  🧾 Version : 2020-08-06
+//  📅 Date    : 2026-28-09
+//  🧠 Author  : mul0
+//  🌐 Site    : https://mul0.com/
+
+[ENABLE]
+alloc(newmem,2048,BattleHUD:CheckHPState+b) 
+
+label(returnhere)
+label(originalcode)
+label(exit)
+label(checkMP)
+label(checkATB)
+label(checkTrance)
+label(enableGM)
+label(enableMP)
+label(enableATB)
+label(enableTrance)
+
+registersymbol(enableGM)
+registersymbol(enableMP)
+registersymbol(enableATB)
+registersymbol(enableTrance)
+
+newmem:
+    push rbx
+    push rcx
+    cmp qword ptr [rsi+28],00
+    je originalcode
+    cmp qword ptr [rsi+30],00
+    je originalcode
+    mov rbx,[rsi+28]
+    mov rcx,[rsi+30]
+
+    cmp byte ptr [enableGM],01
+    jne checkMP
+    mov dx,[rbx+10]
+    mov [rcx+10],dx
+
+checkMP:
+    cmp byte ptr [enableMP],01
+    jne checkATB
+    mov dx,[rbx+12]
+    mov [rcx+12],dx
+
+checkATB:
+    cmp byte ptr [enableATB],01
+    jne checkTrance
+    mov dx,[rbx+14]
+    mov [rcx+14],dx
+
+checkTrance:
+    cmp byte ptr [enableTrance],01
+    jne originalcode
+    mov byte ptr [rsi+110],FF
+
+originalcode:
+    pop rcx
+    pop rbx
+    mov rax,[rsi+30]
+    movzx eax,word ptr [rax+10]
+
+exit:
+    jmp returnhere
+
+enableGM:
+    db 00
+
+enableMP:
+    db 00
+
+enableATB:
+    db 00
+
+enableTrance:
+    db 00
+
+BattleHUD:CheckHPState+b:
+    jmp newmem
+    nop
+    nop
+    nop
+
+returnhere:
+
+[DISABLE]
+unregistersymbol(enableGM)
+unregistersymbol(enableMP)
+unregistersymbol(enableATB)
+unregistersymbol(enableTrance)
+
+dealloc(newmem)
+
+BattleHUD:CheckHPState+b:
+    mov rax,[rsi+30]
+    movzx eax,word ptr [rax+10]
+
+//Alt: db 48 8B 46 30 0F B7 40 10
+
+{
+// ORIGINAL CODE - INJECTION POINT: 08F8FE7B
+
+08F8FE63: 04 80                    -  add al,-80
+08F8FE65: 5B                       -  pop rbx
+08F8FE66: 13 0E                    -  adc ecx,[rsi]
+08F8FE68: 00 00                    -  add [rax],al
+08F8FE6A: 00 00                    -  add [rax],al
+08F8FE6C: 00 00                    -  add [rax],al
+08F8FE6E: 00 00                    -  add [rax],al
+08F8FE70: 48 83 EC 18              -  sub rsp,18
+08F8FE74: 48 89 34 24              -  mov [rsp],rsi
+08F8FE78: 48 8B F2                 -  mov rsi,rdx
+// ---------- INJECTING HERE ----------
+08F8FE7B: 48 8B 46 30              -  mov rax,[rsi+30]
+08F8FE7F: 0F B7 40 10              -  movzx eax,word ptr [rax+10]
+// ---------- DONE INJECTING  ----------
+08F8FE83: 85 C0                    -  test eax,eax
+08F8FE85: 75 0A                    -  jne BattleHUD:CheckHPState+21
+08F8FE87: B8 02 00 00 00           -  mov eax,00000002
+08F8FE8C: E9 4B 00 00 00           -  jmp BattleHUD:CheckHPState+6c
+08F8FE91: 48 8B 46 30              -  mov rax,[rsi+30]
+08F8FE95: 0F B7 40 10              -  movzx eax,word ptr [rax+10]
+08F8FE99: F2 0F 2A C0              -  cvtsi2sd xmm0,eax
+08F8FE9D: 48 8B 46 28              -  mov rax,[rsi+28]
+08F8FEA1: 0F B7 40 10              -  movzx eax,word ptr [rax+10]
+08F8FEA5: F2 0F 2A C8              -  cvtsi2sd xmm1,eax
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1</ID>
+          <Description>"[AA] Minimum 50 Items"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>//  ███╗   ███╗██╗   ██╗██╗      ██████╗
+//  ████╗ ████║██║   ██║██║     ██╔═████╗
+//  ██╔████╔██║██║   ██║██║     ██║██╔██║
+//  ██║╚██╔╝██║██║   ██║██║     ████╔╝██║
+//  ██║ ╚═╝ ██║╚██████╔╝███████╗╚██████╔╝
+//  ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝
+//  🎯 Game    : FF9.exe
+//  🧾 Version : 2020-08-06
+//  📅 Date    : 2026-28-09
+//  🧠 Author  : mul0
+//  🌐 Site    : https://mul0.com/
+
+[ENABLE]
+alloc(newmem,2048,ItemUI:DisplayItem+14a) 
+
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem:
+    cmp byte ptr [rdi+11],#50
+    jge originalcode
+    mov byte ptr [rdi+11],#50
+
+originalcode:
+    movzx eax,byte ptr [rdi+11]
+    mov [rdx+18],eax
+
+exit:
+    jmp returnhere
+
+ItemUI:DisplayItem+14a:
+    jmp newmem
+    nop
+    nop
+
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+
+ItemUI:DisplayItem+14a:
+    movzx eax,byte ptr [rdi+11]
+    mov [rdx+18],eax
+
+//Alt: db 0F B6 47 11 89 42 18
+
+{
+// ORIGINAL CODE - INJECTION POINT: 12D4E95A
+
+12D4E92F: B9 D0 05 3F 21                 -  mov ecx,213F05D0
+12D4E934: 48 83 EC 20                    -  sub rsp,20
+12D4E938: 49 BB 50 1D 24 05 00 00 00 00  -  mov r11,System:Object:__icall_wrapper_mono_object_new_ptrfree
+12D4E942: 41 FF D3                       -  call r11d
+12D4E945: 48 83 C4 20                    -  add rsp,20
+12D4E949: 48 8B D0                       -  mov rdx,rax
+12D4E94C: 4C 8B EA                       -  mov r13,rdx
+12D4E94F: 44 88 72 10                    -  mov [rdx+10],r14l
+12D4E953: 0F B6 47 10                    -  movzx eax,byte ptr [rdi+10]
+12D4E957: 89 42 14                       -  mov [rdx+14],eax
+// ---------- INJECTING HERE ----------
+12D4E95A: 0F B6 47 11                    -  movzx eax,byte ptr [rdi+11]
+12D4E95E: 89 42 18                       -  mov [rdx+18],eax
+// ---------- DONE INJECTING  ----------
+12D4E961: 48 8B CB                       -  mov rcx,rbx
+12D4E964: 48 83 EC 20                    -  sub rsp,20
+12D4E968: 83 3B 00                       -  cmp dword ptr [rbx],00
+12D4E96B: 49 BB 10 9E 27 05 00 00 00 00  -  mov r11,System.Collections.Generic:List`1:Add
+12D4E975: 41 FF D3                       -  call r11d
+12D4E978: 48 83 C4 20                    -  add rsp,20
+12D4E97C: E9 A1 00 00 00                 -  jmp ItemUI:DisplayItem+212
+12D4E981: 48 8B 86 A0 00 00 00           -  mov rax,[rsi+000000A0]
+12D4E988: 0F B6 57 10                    -  movzx edx,byte ptr [rdi+10]
+12D4E98C: 48 8B C8                       -  mov rcx,rax
+}
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>3</ID>
+          <Description>"--------------------------------------------- ----------------------------------------------"</Description>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>7</ID>
+          <Description>"[Flag] Infinite MP"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>//  ███╗   ███╗██╗   ██╗██╗      ██████╗
+//  ████╗ ████║██║   ██║██║     ██╔═████╗
+//  ██╔████╔██║██║   ██║██║     ██║██╔██║
+//  ██║╚██╔╝██║██║   ██║██║     ████╔╝██║
+//  ██║ ╚═╝ ██║╚██████╔╝███████╗╚██████╔╝
+//  ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝
+//  🎯 Game    : FF9.exe
+//  🧾 Version : 2020-08-06
+//  📅 Date    : 2026-28-09
+//  🧠 Author  : mul0
+//  🌐 Site    : https://mul0.com/
+
+[ENABLE]
+enableMP:
+    db 01
+
+[DISABLE]
+enableMP:
+    db 00
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>6</ID>
+          <Description>"[Flag] Godmode"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>//  ███╗   ███╗██╗   ██╗██╗      ██████╗
+//  ████╗ ████║██║   ██║██║     ██╔═████╗
+//  ██╔████╔██║██║   ██║██║     ██║██╔██║
+//  ██║╚██╔╝██║██║   ██║██║     ████╔╝██║
+//  ██║ ╚═╝ ██║╚██████╔╝███████╗╚██████╔╝
+//  ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝
+//  🎯 Game    : FF9.exe
+//  🧾 Version : 2020-08-06
+//  📅 Date    : 2026-28-09
+//  🧠 Author  : mul0
+//  🌐 Site    : https://mul0.com/
+
+[ENABLE]
+enableGM:
+    db 01
+
+[DISABLE]
+enableGM:
+    db 00
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>4</ID>
+          <Description>"[Flag] Full trance"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>//  ███╗   ███╗██╗   ██╗██╗      ██████╗
+//  ████╗ ████║██║   ██║██║     ██╔═████╗
+//  ██╔████╔██║██║   ██║██║     ██║██╔██║
+//  ██║╚██╔╝██║██║   ██║██║     ████╔╝██║
+//  ██║ ╚═╝ ██║╚██████╔╝███████╗╚██████╔╝
+//  ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝
+//  🎯 Game    : FF9.exe
+//  🧾 Version : 2020-08-06
+//  📅 Date    : 2026-28-09
+//  🧠 Author  : mul0
+//  🌐 Site    : https://mul0.com/
+
+[ENABLE]
+enableTrance:
+    db 01
+
+[DISABLE]
+enableTrance:
+    db 00
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>5</ID>
+          <Description>"[Flag] Full ATB"</Description>
+          <LastState/>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>//  ███╗   ███╗██╗   ██╗██╗      ██████╗
+//  ████╗ ████║██║   ██║██║     ██╔═████╗
+//  ██╔████╔██║██║   ██║██║     ██║██╔██║
+//  ██║╚██╔╝██║██║   ██║██║     ████╔╝██║
+//  ██║ ╚═╝ ██║╚██████╔╝███████╗╚██████╔╝
+//  ╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝
+//  🎯 Game    : FF9.exe
+//  🧾 Version : 2020-08-06
+//  📅 Date    : 2026-28-09
+//  🧠 Author  : mul0
+//  🌐 Site    : https://mul0.com/
+
+[ENABLE]
+enableATB:
+    db 01
+
+[DISABLE]
+enableATB:
+    db 00
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>8</ID>
+          <Description>"--------------------------------------------- ----------------------------------------------"</Description>
+          <LastState Value="" RealAddress="00000000"/>
+          <GroupHeader>1</GroupHeader>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>9</ID>
+          <Description>"Reset XP to 0"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>6C</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>10</ID>
+          <Description>"+1 Level"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>69</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>11</ID>
+          <Description>"+5,000 Experience"</Description>
+          <VariableType>4 Bytes</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>6C</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>12</ID>
+          <Description>"+10 Z-Reflex"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>30</Offset>
+            <Offset>13</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>13</ID>
+          <Description>"+10 Z-Defence"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>30</Offset>
+            <Offset>12</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>14</ID>
+          <Description>"+10 Reflex"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>30</Offset>
+            <Offset>11</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>15</ID>
+          <Description>"+10 Defence"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>30</Offset>
+            <Offset>10</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>16</ID>
+          <Description>"+10 Willpower"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>28</Offset>
+            <Offset>13</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>17</ID>
+          <Description>"+10 Magic"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>28</Offset>
+            <Offset>12</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>18</ID>
+          <Description>"+10 Strength"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>28</Offset>
+            <Offset>11</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>19</ID>
+          <Description>"+10 Dexterity"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>28</Offset>
+            <Offset>10</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>20</ID>
+          <Description>"Mega-Crystals"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>20</Offset>
+            <Offset>17</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>21</ID>
+          <Description>"Capa"</Description>
+          <VariableType>Byte</VariableType>
+          <Address>playerBase</Address>
+          <Offsets>
+            <Offset>18</Offset>
+            <Offset>17</Offset>
+          </Offsets>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
+
