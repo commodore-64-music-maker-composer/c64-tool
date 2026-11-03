@@ -5,102 +5,81 @@
       <ID>500</ID>
       <Description>"FF9 Steam — Djidane God Mode (pointer)"</Description>
       <LastState Value="" RealAddress="00000000"/>
-      <GroupHeader>1</GroupHeader>
-      <CheatEntries>
-        <CheatEntry>
-          <ID>501</ID>
-          <Description>"1) Capture Djidane pointer — open party/status screen once"</Description>
-          <LastState/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>// Based on the supplied table; original table credit: mul0 / mul0.com.
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>// Based on the supplied table; original table credit: mul0 / mul0.com.
+// One switch installs both hooks, so playerBase is always declared.
 [ENABLE]
-alloc(newmem,2048,StatusUI:DisplayAllCharacterInfo+388)
-label(returnhere)
-label(originalcode)
+alloc(captureMem,2048,StatusUI:DisplayAllCharacterInfo+388)
+alloc(godMem,2048,BattleHUD:CheckHPState+b)
+label(captureReturn)
+label(captureOriginal)
 label(playerBase)
+label(godReturn)
+label(godRestore)
 registersymbol(playerBase)
 
-newmem:
+captureMem:
     cmp byte ptr [rax+68],00
-    jne originalcode
+    jne captureOriginal
     mov [playerBase],rax
 
-originalcode:
+captureOriginal:
     movzx eax,byte ptr [rax+69]
     cmp eax,63
-    jmp returnhere
+    jmp captureReturn
 
 playerBase:
     dq 00
 
-StatusUI:DisplayAllCharacterInfo+388:
-    jmp newmem
-    nop
-    nop
-
-returnhere:
-
-[DISABLE]
-unregistersymbol(playerBase)
-dealloc(newmem)
-
-StatusUI:DisplayAllCharacterInfo+388:
-    movzx eax,byte ptr [rax+69]
-    cmp eax,63
-</AssemblerScript>
-        </CheatEntry>
-        <CheatEntry>
-          <ID>502</ID>
-          <Description>"2) Djidane God Mode — battle only"</Description>
-          <LastState/>
-          <VariableType>Auto Assembler Script</VariableType>
-          <AssemblerScript>// Enable step 1 first and visit the party/status screen once.
-// Copies max HP to current HP only when the battle pointer equals playerBase.
-[ENABLE]
-alloc(newmem,2048,BattleHUD:CheckHPState+b)
-label(returnhere)
-label(restore)
-
-newmem:
+godMem:
     push rbx
     push rcx
     cmp qword ptr [playerBase],00
-    je restore
+    je godRestore
     cmp rsi,[playerBase]
-    jne restore
+    jne godRestore
     cmp qword ptr [rsi+28],00
-    je restore
+    je godRestore
     cmp qword ptr [rsi+30],00
-    je restore
+    je godRestore
     mov rbx,[rsi+28]
     mov rcx,[rsi+30]
     mov dx,[rbx+10]
     mov [rcx+10],dx
 
-restore:
+godRestore:
     pop rcx
     pop rbx
     mov rax,[rsi+30]
     movzx eax,word ptr [rax+10]
-    jmp returnhere
+    jmp godReturn
+
+StatusUI:DisplayAllCharacterInfo+388:
+    jmp captureMem
+    nop
+    nop
+captureReturn:
 
 BattleHUD:CheckHPState+b:
-    jmp newmem
+    jmp godMem
     nop
     nop
     nop
-
-returnhere:
+godReturn:
 
 [DISABLE]
-dealloc(newmem)
+unregistersymbol(playerBase)
+dealloc(godMem)
+dealloc(captureMem)
+
+StatusUI:DisplayAllCharacterInfo+388:
+    movzx eax,byte ptr [rax+69]
+    cmp eax,63
 
 BattleHUD:CheckHPState+b:
     mov rax,[rsi+30]
     movzx eax,word ptr [rax+10]
 </AssemblerScript>
-        </CheatEntry>
-      </CheatEntries>
     </CheatEntry>
   </CheatEntries>
   <UserdefinedSymbols/>
